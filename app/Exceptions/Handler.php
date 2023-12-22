@@ -31,14 +31,15 @@ class Handler extends ExceptionHandler
 
     /**
      * Register the exception handling callbacks for the application.
-     * This reset the default message
+     * This reset the default message for unauthenticated messages
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
         if ($request->expectsJson()) {
             return response()->json([
-                'status' => false,
-                'message' => 'Unauthenticated, kindly login'
+                'success' => false,
+                'message' => 'Unauthenticated, kindly login',
+                'errors' => $exception->getMessage(),
             ], 401);
         }
     }

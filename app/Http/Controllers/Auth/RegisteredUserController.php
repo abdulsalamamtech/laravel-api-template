@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Traits\ApiHttpResponse;
 use Illuminate\Validation\Rules;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
@@ -14,6 +15,8 @@ use Illuminate\Auth\Events\Registered;
 
 class RegisteredUserController extends Controller
 {
+    use ApiHttpResponse;
+
     /**
      * Handle an incoming registration request.
      *
@@ -36,16 +39,11 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
-
-        $token = $user->createToken('Registration api token for ' . $user->name)->plainTextToken;
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'registration successful',
-            'user' => $user,
-            'token' => $token,
-        ]);
-
-        // return response()->noContent();
+        $data = [
+                'user' => $user,
+                'token' => $user->createToken('Registration api token for ' . $user->name)->plainTextToken,
+            ];
+        $message = 'registration successful';
+        return $this->sendSuccess($data,  $message, 200);
     }
 }
