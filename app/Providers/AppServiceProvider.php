@@ -12,19 +12,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $PATH = (config('app.env') !== 'local'? env('PRO_PUBLIC_PATH', 'public'): 'public');
-        if($PATH !== 'public'){
-            $this->app->bind('path.public', function()
-            {
-                    // return base_path('public_html');
-                    return base_path($PATH);
-            });
-        }
+        //
     }
 
     /**
      * Bootstrap any application services.
      */
+    
     // public function boot(): void
     // {
     //     //
@@ -35,8 +29,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(UrlGenerator $url): void
     {
+        // if (env('APP_ENV') == 'production') {
+        //     $url->forceScheme('https');
+        // }
         if (env('APP_ENV') == 'production') {
-            $url->forceScheme('https');
+            $this->app['request']->server->set('HTTPS', true);
         }
     }
 }
