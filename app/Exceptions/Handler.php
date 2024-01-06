@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Throwable;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Database\QueryException;
 
 class Handler extends ExceptionHandler
 {
@@ -19,6 +20,7 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
+
     /**
      * Register the exception handling callbacks for the application.
      */
@@ -29,6 +31,7 @@ class Handler extends ExceptionHandler
         });
     }
 
+
     /**
      * Register the exception handling callbacks for the application.
      * This reset the default message for unauthenticated messages
@@ -38,9 +41,29 @@ class Handler extends ExceptionHandler
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Unauthenticated, kindly login',
+                'message' => 'unauthenticated, kindly login',
                 'errors' => $exception->getMessage(),
             ], 401);
         }
     }
+
+
+    public function render($request, Throwable $exception)
+    {
+        // Handle database query exceptions here
+        if ($exception instanceof QueryException) {
+            // Example: Log the error and return a custom JSON response
+            logger()->error('Database query error:', ['exception' => $exception]);
+            return response()->json([
+                'success' => false,
+                'message' => 'incomplete information',
+                // 'errors' => $exception->getMessage(),
+                // Trim certain character from the message
+                'errors' => trim(substr($exception->getMessage(), 0, strpos($exception->getMessage(), ' (' )), 'SQLSTATE[HY000]: '),
+            ], 400);
+        }
+
+        return parent::render($request, $exception);
+    }
+
 }
