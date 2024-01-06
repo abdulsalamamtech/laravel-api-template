@@ -22,9 +22,11 @@ services:
       - key: APP_KEY
         sync: false
       - key: APP_ENV
-        value: production
+        # value: production
+        # value: local
       - key: APP_DEBUG
-        value: false
+        # value: false
+        value: true
       - key: LOG_CHANNEL
         value: stderr
       # Image-specific vars (richarvey/nginx-php-fpm)

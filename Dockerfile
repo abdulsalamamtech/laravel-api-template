@@ -29,7 +29,7 @@ RUN apk add --no-cache npm
 
 
 FROM node:8.15.1-alpine as build-stage
-WORKDIR /app
+WORKDIR /var/www/html
 COPY . .
 RUN npm --verbose install
 RUN npm run build
