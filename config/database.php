@@ -45,12 +45,13 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            // Start Production Settings
+            'host' => (config('app.env') === 'local'? env('DB_HOST', '127.0.0.1'): env('PRO_DB_HOST', '127.0.0.1')),
+            'port' => (config('app.env') === 'local'? env('DB_PORT', '3306'): env('PRO_DB_PORT', '3306')),
+            'database' => (config('app.env') === 'local'? env('DB_DATABASE', 'forge'): env('PRO_DB_DATABASE', 'forge')),
+            'username' => (config('app.env') === 'local'? env('DB_USERNAME', 'forge'): env('PRO_DB_USERNAME', 'forge')),
+            'password' => (config('app.env') === 'local'? env('DB_PASSWORD', ''): env('PRO_DB_PASSWORD', '')),
+            // End Production Settings
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
