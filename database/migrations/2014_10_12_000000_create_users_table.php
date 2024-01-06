@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            // (11 to 13)2349091922467 or 09091922467
+            $table->string('phone_number', 13)->unique();
+            $table->enum('role', ['admin', 'vendor', 'user'])->default('user');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
