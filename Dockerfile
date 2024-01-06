@@ -28,14 +28,14 @@ RUN apk add --no-cache npm
 # USER node
 
 
-FROM node:8.15.1-alpine as build-stage
-WORKDIR /var/www/html
-COPY . .
-RUN npm --verbose install
-RUN npm run build
+# FROM node:8.15.1-alpine as build-stage
+# WORKDIR /var/www/html
+# COPY . .
+# RUN npm --verbose install
+# RUN npm run build
 
 
 # Build Vite assets
-RUN npm run build
+# RUN npm run build
 
 CMD ["/start.sh"]
